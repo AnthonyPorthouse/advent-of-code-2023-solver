@@ -16,6 +16,9 @@ export default function Nav() {
             <li>
               <Link href={"/day/3"} className={`block my-4 mx-6`}>Day 3</Link>
             </li>
+            <li>
+              <Link href={"/day/4"} className={`block my-4 mx-6`}>Day 4</Link>
+            </li>
           </ul>
         </nav>
     )

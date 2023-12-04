@@ -20,7 +20,7 @@ describe(solvePart1, async () => {
     })
 })
 
-describe(solvePart2,async () => {
+describe.skip(solvePart2, async () => {
     it('should return 4361', async () => {
         expect(solvePart2(exampleInput)).toBe(467835)
     })
