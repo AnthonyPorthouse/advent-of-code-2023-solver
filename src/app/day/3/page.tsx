@@ -24,7 +24,7 @@ export default function Day3() {
         <div>
             <div className="grid grid-cols-1 w-1/2 mx-auto gap-4">
 
-                <Header>Day 3</Header>
+                <Header>Day 3: Gear Ratios</Header>
 
 
                 <label htmlFor="input" className="text-gray-800">Input</label>

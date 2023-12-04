@@ -1,7 +1,47 @@
-export type Point = {
-    x: number,
-    y: number,
-    z?: number
+// export type Point = {
+//     x: number,
+//     y: number,
+//     z?: number
+// }
+
+export class Point {
+    x: number
+    y: number
+    z: number
+
+    private constructor(x: number, y: number, z?: number) {
+        this.x = x
+        this.y = y
+        this.z = z || 0
+    }
+
+    static fromObject({ x, y, z }: { x: number, y: number, z?: number }) {
+        return new this(x, y, z)
+    }
+
+    static fromSymbol(point: symbol) {
+        const key = Symbol.keyFor(point)
+
+        if (!key) {
+            throw `invalid symbol ${point.toString()}`
+        }
+
+        const [x, y, z] = key.split(', ').map(Number);
+
+        return new this(x, y, z)
+    }
+
+    add(point: Point) {
+        return Point.fromObject({ x: this.x + point.x, y: this.y + point.y, z: this.z + point.z })
+    }
+
+    toString() {
+        return `${this.x}, ${this.y}, ${this.z || 0}`
+    }
+
+    toSymbol() {
+        return Symbol.for(this.toString())
+    }
 }
 
 export default class Grid {
@@ -21,7 +61,7 @@ export default class Grid {
 
     static fromArray(input: string[][] | string[][][]) {
 
-        const is2dInput = function(input: string[][] | string[][][]): input is string[][] {
+        const is2dInput = function (input: string[][] | string[][][]): input is string[][] {
             return !Array.isArray(input[0][0])
         }
 
@@ -39,7 +79,7 @@ export default class Grid {
         for (const [z, layer] of input3d.entries()) {
             for (const [y, row] of layer.entries()) {
                 for (const [x, value] of row.entries()) {
-                    grid.setPoint({x,y,z}, value)
+                    grid.setPoint(Point.fromObject({ x, y, z }), value)
                 }
             }
         }
@@ -48,9 +88,42 @@ export default class Grid {
     }
 
 
+    getPoint(point: Point): string | undefined;
 
-    getPoint(point: Point): string | undefined {
-        return this.data[this.formatPoint(point)]
+    getPoint(point: { x: number, y: number, z?: number }): string | undefined;
+
+    getPoint(point: Point | { x: number, y: number, z?: number }): string | undefined {
+
+        let newPoint: Point
+
+        if (point instanceof Point) {
+            newPoint = point
+        } else {
+            newPoint = Point.fromObject(point as { x: number, y: number, z?: number })
+        }
+
+        return this.data[newPoint.toSymbol()]
+    }
+
+    setPoint(point: Point, data: string): void;
+
+    setPoint(point: { x: number, y: number, z?: number }, data: string): void;
+
+    setPoint(point: Point | { x: number, y: number, z?: number }, data: string) {
+
+        let newPoint: Point
+
+        if (point instanceof Point) {
+            newPoint = point
+        } else {
+            newPoint = Point.fromObject(point as { x: number, y: number, z?: number })
+        }
+
+        this.width = Math.max(this.width, newPoint.x + 1);
+        this.height = Math.max(this.height, newPoint.y + 1);
+        this.depth = Math.max(this.depth, newPoint.z + 1);
+
+        this.data[newPoint.toSymbol()] = data
     }
 
     getSurroundingPoints(point: Point) {
@@ -59,8 +132,9 @@ export default class Grid {
         for (let z = (point.z || 0) - 1; z <= (point.z || 0) + 1; z++) {
             for (let y = point.y - 1; y <= point.y + 1; y++) {
                 for (let x = point.x - 1; x <= point.x + 1; x++) {
-                    if (this.formatPoint({ x, y, z }) !== this.formatPoint({ ...point, z: point.z || 0 })) {
-                        points = [...points, { x, y, z }]
+                    const newPoint = Point.fromObject(Point.fromObject({ x, y, z }))
+                    if (newPoint.toSymbol() !== Point.fromObject({ ...point, z: point.z || 0 }).toSymbol()) {
+                        points = [...points, newPoint]
                     }
                 }
             }
@@ -69,18 +143,6 @@ export default class Grid {
         return points
     }
 
-    setPoint(point: Point, data: string) {
-
-        this.width = Math.max(this.width, point.x + 1);
-        this.height = Math.max(this.height, point.y + 1);
-        this.depth = Math.max(this.depth, (point.z || 0) + 1);
-
-        this.data[this.formatPoint(point)] = data
-    }
-
-    private formatPoint({ x, y, z }: Point) {
-        return Symbol.for(`${x},${y},${z || 0}`)
-    }
 
     toString() {
         let out = ""
@@ -90,7 +152,7 @@ export default class Grid {
 
             for (let y = 0; y < this.height; y++) {
                 for (let x = 0; x < this.width; x++) {
-                    out += this.getPoint({ x, y, z }) || ' '
+                    out += this.getPoint(Point.fromObject({ x, y, z })) || ' '
                 }
 
                 out += `\n`;
