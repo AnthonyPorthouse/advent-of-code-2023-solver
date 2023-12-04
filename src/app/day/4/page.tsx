@@ -33,7 +33,7 @@ export default function Day3() {
                     setResult(solvePart1(input))
                 }}>Solve Part 1</button>
 
-                <button disabled className="border rounded-md px-4 py-2" onClick={() => {
+                <button className="border rounded-md px-4 py-2" onClick={() => {
                     setResult(solvePart2(input))
                 }}>Solve Part 2</button>
 

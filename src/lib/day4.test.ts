@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { solvePart1 } from "./day4";
+import { solvePart1, solvePart2 } from "./day4";
 
 const exampleInput = `
 Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
@@ -13,5 +13,11 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
 describe(solvePart1, async () => {
     it('should return 13', async () => {
         expect(solvePart1(exampleInput)).toBe(13)
+    })
+})
+
+describe(solvePart2, async () => {
+    it('should return 30', async () => {
+        expect(solvePart2(exampleInput)).toBe(30)
     })
 })
