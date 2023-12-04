@@ -73,8 +73,6 @@ export function solvePart2(input: string) {
 
     let total = 0
 
-    console.log(cards)
-
     for (const card of Object.values(cards)) {
         total += keepGoing(cards, card.id) + 1
     }
