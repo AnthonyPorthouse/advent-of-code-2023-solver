@@ -71,13 +71,5 @@ export function solvePart2(input: string) {
 
     const scores = parseInputPart2(input).map(calculateValidHoldTimes)
 
-    const total = scores.reduce((total, score) => {
-        if (total === 0) {
-            return score.validHoldTimesTotal
-        }
-
-        return total * score.validHoldTimesTotal
-    }, 0)
-
-    return total
+    return scores[0].validHoldTimesTotal
 }

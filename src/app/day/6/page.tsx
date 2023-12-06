@@ -4,13 +4,13 @@ import Header from "@/components/layout/header"
 import { solvePart1, solvePart2 } from "@/lib/day6"
 import { useState } from "react"
 
-const day4Example = `
+const day6Example = `
 Time:      7  15   30
 Distance:  9  40  200
 `.trim()
 
-export default function Day3() {
-    const [input, setInput] = useState(day4Example)
+export default function Day6() {
+    const [input, setInput] = useState(day6Example)
 
     const [result, setResult] = useState<string | number>()
 
