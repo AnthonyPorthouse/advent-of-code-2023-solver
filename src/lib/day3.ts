@@ -1,4 +1,4 @@
-import Grid from "./utils/grid";
+import Grid, { Point } from "./utils/grid";
 
 function populateGridFromInput(input: string) {
     const grid = new Grid();
@@ -85,7 +85,7 @@ export function solvePart1(input: string) {
             
             // Check if we're a match
             for (const point of spans) {
-                const points = grid.getSurroundingPoints(point);
+                const points = grid.getSurroundingPoints(Point.fromObject(point));
                 points.map((point) => {
                     const val = grid.getPoint(point)
                     
@@ -158,7 +158,7 @@ export function solvePart2(input: string) {
             
             // Check if we're a match
             for (const point of spans) {
-                const points = grid.getSurroundingPoints(point);
+                const points = grid.getSurroundingPoints(Point.fromObject(point));
                 points.map((point) => {
                     const val = grid.getPoint(point)
                     
