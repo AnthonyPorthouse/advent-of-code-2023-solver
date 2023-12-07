@@ -162,6 +162,9 @@ export function solvePart2(input: string) {
     const seedValues = seeds.split(':')[1].trim().split(' ').map(Number)
 
     function* seedRanges() {
+
+        // TODO: calculate overlapping ranges and simplify to reduce CPU usage
+
         for (let i = 0; i < seedValues.length; i+= 2) {
             yield [seedValues[i], seedValues[i+1]]
         }
