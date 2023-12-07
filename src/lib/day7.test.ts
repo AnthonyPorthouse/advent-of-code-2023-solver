@@ -14,3 +14,9 @@ describe(solvePart1, async () => {
         expect(solvePart1(exampleInput)).toBe(6440)
     })
 })
+
+describe(solvePart2, async () => {
+    it('should return 5905', async () => {
+        expect(solvePart2(exampleInput)).toBe(5905)
+    })
+})
